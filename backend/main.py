@@ -3,10 +3,10 @@
 # this list, just manually change it by hand.
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from schemas import Shelter, Animal
 
-app = FastAPI()
 
 shelters: list[Shelter] = [
     Shelter(
@@ -26,8 +26,26 @@ shelters: list[Shelter] = [
         name="Animal Rescue Team",
         address="1838 W 1020 N Ste. B, St. George, UT 84770",
         animals={"cats": 4, "dogs": 7}
+    ),
+        Shelter(
+        shelter_id=4,
+        name="Bailey's Rescued Animals",
+        address="25 Main St, St. George, UT 84770",
+        animals={"cats": 0, "dogs": 0}
     )
 ]
+
+app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/shelters")
